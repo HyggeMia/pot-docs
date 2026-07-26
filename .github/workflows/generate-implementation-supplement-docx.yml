@@ -1,0 +1,37 @@
+name: Generate implementation supplement Word
+
+on:
+  push:
+    paths:
+      - 'tmp/implementation_plan_supplement_text_analysis_20260726.doc'
+      - 'tmp/generate_implementation_supplement_docx.py'
+      - '.github/workflows/generate-implementation-supplement-docx.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install python-docx beautifulsoup4
+      - run: python tmp/generate_implementation_supplement_docx.py
+      - name: Commit generated Word file
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add artifacts/implementation_plan_supplement_text_analysis_20260726.docx
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Generate implementation plan supplement Word file [skip ci]"
+            git push
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: implementation-plan-supplement-word
+          path: artifacts/implementation_plan_supplement_text_analysis_20260726.docx
