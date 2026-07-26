@@ -1,0 +1,16 @@
+name: Package implementation supplement Word
+
+on:
+  pull_request:
+    paths:
+      - 'tmp/trigger_implementation_docx_artifact.txt'
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: implementation-plan-supplement-word-download
+          path: artifacts/implementation_plan_supplement_text_analysis_20260726.docx
